@@ -44,8 +44,9 @@
 (defn golomb-report
   "Custom generational report."
   [best population generation error-function report-simplifications]
-  (let [best-with-test (golomb-error best testing)
-        best-test-errors (:errors best-with-test)
+  (let [best-with-test (assoc best
+                         :test-errors (:errors (golomb-error best testing)))
+        best-test-errors (:test-errors best-with-test)
         best-total-test-error (apply +' best-test-errors)]
     (println ";;******************************")
     (printf ";; -*- Golomb report - generation %s\n" generation)(flush)
@@ -54,7 +55,6 @@
                      (double (/ best-total-test-error (count best-test-errors)))))
     (println ";;******************************")
     best-with-test))
-
 
 (def argmap
   {:error-function (fn [ind] (golomb-error ind training))
@@ -69,4 +69,5 @@
    :parent-selection :lexicase
    :report-simplifications 0
    :problem-specific-report golomb-report})
+
 
