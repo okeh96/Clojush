@@ -11,7 +11,8 @@
             [clojush.pushgp.selection.epsilon-lexicase]
             [clojush.experimental.decimation :refer [decimate]]
             [clojush.pushgp.breed :refer [breed]]
-            [clojush.globals :as globals]))
+            [clojush.globals :as globals]
+            [clojush.graphs.utils :refer [profile-fn]]))
 
 (defnk translate-plush-to-push [index [:config record-time! argmap pop-agents]]
   (println "Processing generation:" index) (flush)
@@ -23,9 +24,10 @@
    [:config rand-gens pop-agents record-time!
     [:argmap use-single-thread error-function :as argmap]]]
   (print "Computing errors... ") (flush)
-  (let [f (if use-single-thread swap! send)]
+  (let [f (if use-single-thread swap! send)
+        wrapped-error-function (profile-fn error-function [:generation :compute-errors :error-function])]
     (dorun (map (fn [ind rand]
-                  (f ind clojush.evaluate/evaluate-individual error-function rand argmap))
+                  (f ind clojush.evaluate/evaluate-individual wrapped-error-function rand argmap))
                 pop-agents
                 rand-gens)))
   (when-not use-single-thread (apply await pop-agents))

@@ -52,15 +52,20 @@
           (update :finished update ks (fn [prev-time] (+ total-time (or prev-time 0))))
           (update :started (partial map-vals #(+ % total-time))))))))
 
+(defn profile-fn
+  [f ks]
+  (if profile-file-name
+    (fn [& args]
+      (start! ks)
+      (let [res (apply f args)]
+       (end! ks)
+       res))
+    f))
 
 (defn profile-fnk
   [f ks]
   (pfnk/fn->fnk
-   (fn [m]
-     (start! ks)
-     (let [res (f m)]
-      (end! ks)
-      res))
+   (profile-fn f ks)
    [(pfnk/input-schema f)
     (pfnk/output-schema f)]))
 

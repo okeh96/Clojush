@@ -18,7 +18,8 @@
 (ns clojush.core
   (:require [clojush.graphs.init :refer [->init]]
             [clojush.graphs.utils :refer [end-profile!]]
-            [clojush.pushgp.pushgp :refer [pushgp]])
+            [clojush.pushgp.pushgp :refer [pushgp]]
+            [clojush.interpreter])
   (:gen-class))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -40,4 +41,6 @@
         (pushgp (:params init))
         (end-profile!))
       (finally
+        (doseq [[k v] clojush.interpreter/time-atom]
+          (println k (/ @v 1000)))
         (shutdown-agents)))))

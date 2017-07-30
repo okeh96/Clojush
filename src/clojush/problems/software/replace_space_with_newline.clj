@@ -15,7 +15,8 @@
         [clojush pushstate interpreter random util globals]
         clojush.instructions.tag
         clojure.math.numeric-tower)
-    (:require [clojure.string :as string]))
+    (:require [clojure.string :as string]
+              [clojush.graphs.utils :refer [profile-fn]]))
 
 ;; Define test cases
 (defn replace-space-with-newline-input
@@ -93,6 +94,9 @@
 (def replace-space-with-newline-train-and-test-cases
   (get-replace-space-with-newline-train-and-test replace-space-with-newline-data-domains))
 
+(def run-push-wrapped
+  (profile-fn run-push [:generation :compute-errors :error-function :evaluate-program-for-behaviors :run-push]))
+
 (defn replace-space-with-newline-evaluate-program-for-behaviors
   "Evaluates the program on the given list of cases.
    Returns the behaviors, a list of the outputs of the program on the inputs."
@@ -100,13 +104,17 @@
   (flatten
    (doall
     (for [[input output] cases]
-      (let [final-state (run-push program
+      (let [final-state (run-push-wrapped program
                                   (->> (make-push-state)
                                        (push-item input :input)
                                        (push-item "" :output)))
             printed-result (stack-ref :output 0 final-state)
             int-result (stack-ref :integer 0 final-state)]
         (vector printed-result int-result))))))
+
+(def replace-space-with-newline-evaluate-program-for-behaviors-wrapped
+  (profile-fn replace-space-with-newline-evaluate-program-for-behaviors [:generation :compute-errors :error-function :evaluate-program-for-behaviors]))
+
 
 (defn replace-space-with-newline-errors-from-behaviors
   "Takes a list of behaviors across the list of cases and finds the error
@@ -125,6 +133,9 @@
           behavior-pairs
           output-pairs))))
 
+(def replace-space-with-newline-errors-from-behaviors-wrapped
+  (profile-fn replace-space-with-newline-errors-from-behaviors [:generation :compute-errors :error-function :errors-from-behaviors]))
+
 (defn replace-space-with-newline-error-function
   "The error function for Replace Space With Newline. Takes an individual as input,
    and returns that individual with :errors and :behaviors set."
@@ -135,9 +146,9 @@
                  :train (first replace-space-with-newline-train-and-test-cases)
                  :test (second replace-space-with-newline-train-and-test-cases)
                  [])
-         behaviors (replace-space-with-newline-evaluate-program-for-behaviors (:program individual)
+         behaviors (replace-space-with-newline-evaluate-program-for-behaviors-wrapped (:program individual)
                                                                  cases)
-         errors (replace-space-with-newline-errors-from-behaviors behaviors cases)]
+         errors (replace-space-with-newline-errors-from-behaviors-wrapped behaviors cases)]
      (cond
        (= data-cases :train) (assoc individual :behaviors behaviors :errors errors)
        (= data-cases :test) (assoc individual :test-errors errors)))))

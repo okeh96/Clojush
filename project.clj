@@ -54,6 +54,7 @@
 ;                          "-XX:-TieredCompilation"
 ;                          "-XX:+AggressiveOpts"
 ;                          "-Djava.awt.headless=true"])
+  :jvm-opts ["-Dclojure.compiler.direct-linking=true"]
   ;;;;;;;;;; misc other jvm-opts
   ;:jvm-opts ["-Djava.awt.headless=true"]
   ;;"-XX:+UseG1GC"
