@@ -25,3 +25,9 @@ clojush.iml
 .gorilla-port
 /clojush/
 .ipynb_checkpoints/
+.conda
+.cache
+.local
+.ipython
+.theano
+.jupyter
