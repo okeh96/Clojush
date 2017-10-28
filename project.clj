@@ -18,6 +18,8 @@
                  [prismatic/plumbing "0.5.4"]
                  [criterium "0.4.4"]
                  [net.totakke/libra "0.1.0"]
+                 [clojure-future-spec "1.9.0-beta2"]
+                 [org.clojure/test.check "0.9.0"]
                  [info.debatty/java-string-similarity "1.0.0"]]
   :plugins [[lein-codox "0.9.1"]
             [lein-shell "0.5.0"]
