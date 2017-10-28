@@ -139,6 +139,15 @@
       (reset! timer-atom (System/currentTimeMillis))
       (swap! timing-map assoc step (+ current-time-for-step (- @timer-atom start-time))))))
 
+(def start-time (atom (System/nanoTime)))
+
+(defn log-event [i]
+  (let [new-time (System/nanoTime)
+        elapsed (/ (- new-time @start-time) 1e9)]
+    (reset! start-time new-time)
+    (binding [*out* *err*]
+      (println (str i "," elapsed)))))
+
 (defn pushgp
   "The top-level routine of pushgp."
   ([] (pushgp '()))
@@ -196,6 +205,7 @@
          (let [[outcome best] (report-and-check-for-success (vec (doall (map deref pop-agents)))
                                                             generation @push-argmap)]
            (r/generation-data! [:outcome] outcome)
+           (log-event generation)
            (r/end-generation!)
            (cond (= outcome :failure) (do (printf "\nFAILURE\n")
                                         (if (:return-simplified-on-failure @push-argmap)
