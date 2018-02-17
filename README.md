@@ -1,3 +1,24 @@
+ArchEvolve
+=======
+
+This updated README includes details about the ArchEvolve implementation. The
+ArchEvolve system is built ontop of the Clojush genetic programming system
+and streamlines the construction process from customer parameterization and
+demand through every stage of the design process.
+
+Goals:
+-----------
+[-] Implement system with Java binding for OpenGL (JOGL) to visualize results from initial stages of development process
+[-] Implement first test case that simply checks that all nodes are within the predefined maximum x,y,z values
+[-] Decide between using tree-based growth or random node creation representations
+[-] Complete first software prototype according to first two steps
+[-] Start Stage 2 that transitions over to Revit/DynamoBim or other software that can be accessed headlessly
+[-] Implement second test case that minimizes nodes and connections to reduce material use and maximizes 
+    structural safety according to federal and state regulations
+[-] Implement more design features other than straight steel beams (other shapes and materials)
+[-] To-Do
+
+
 Clojush [![Travis branch](https://img.shields.io/travis/lspector/Clojush/master.svg?style=flat-square)](https://travis-ci.org/lspector/Clojush) [![Coveralls branch](https://img.shields.io/coveralls/lspector/Clojush/master.svg?style=flat-square)](https://coveralls.io/github/lspector/Clojush) [![API Docs](https://img.shields.io/badge/api%20docs-master-blue.svg?style=flat-square)](http://lspector.github.io/Clojush/) [![Clojars Project](https://img.shields.io/clojars/v/clojush.svg?style=flat-square)](http://clojars.org/clojush)
 =======
 
