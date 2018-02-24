@@ -1,5 +1,7 @@
 (defproject clojush "3.9.0-1-SNAPSHOT"
-  :description "The Push programming language and the PushGP genetic programming
+  :description "ArchEvolve system for automated design and engineering plans.
+
+                The Push programming language and the PushGP genetic programming
                 system implemented in Clojure. See http://pushlanguage.com"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
@@ -17,7 +19,8 @@
                  [cheshire "5.7.1"]
                  [prismatic/plumbing "0.5.4"]
                  [criterium "0.4.4"]
-                 [net.totakke/libra "0.1.0"]]
+                 [net.totakke/libra "0.1.0"]
+                 [opengl/jogl "2.0-rc3"]]
   :plugins [[lein-codox "0.9.1"]
             [lein-shell "0.5.0"]
             [lein-gorilla "0.4.0"]
